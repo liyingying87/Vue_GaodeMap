@@ -2,62 +2,99 @@
 <template>
   <div class="m-map">
     <div id="container" class="map">正在加载数据 ...</div>
+    <div v-for="lnglat in lngLats" v-bind:key="lnglat.id">
+     {{lnglat.id}}
+      {{lnglat.x}}
+      {{lnglat.y}}
+      <p></p>
+    </div>
   </div>
 </template>
 <script>
 import remoteLoad from '@/utils/remoteLoad.js'
 import {MapKey} from '@/config/config'
+import { mapState } from 'vuex'
+import {store} from '../store/index.js'
 import {LabelsData} from '../Data/Markers_locations'
 
 export default {
-  props: ['lat', 'lng'],
+  name:'mapDrag',
   data() {
     return {}
   },
-  watch: {},
+  computed:{
+    ...mapState(['lngLats'])
+  },
   methods: {
     // 实例化地图
     initMap() {
+      console.log(this.lngLats.length+"..");
+      const test1 = 4;
+      //这里怎么存进去是个问题
+      const lnglat_my =this.lngLats ;
+      console.log("类型是："+typeof this.lngLats);
+      console.log(this.lngLats);
+      //
+      // for (let i=0,len = this.lngLats.length;i<len;i++){
+      //   lnglat_my[i]=8;
+      // }
+      console.log("数组大小为："+lnglat_my);
+      console.log(test1+"vvvv..");
+      let AMapUI = this.AMapUI = window.AMapUI;
       let AMap = this.AMap = window.AMap;
+      console.log("-");
       let map = new AMap.Map('container', {
-        zoom: 17,//级别
-        center: [121.504463, 31.030588],//中心点坐标
-        viewMode: '2D'//使用3D视图,
+        zoom: 17,
+        center: [121.504396,31.032782]
       });
-      console.log(LabelsData);
-      let layer = new AMap.LabelsLayer({
-        zooms: [3, 20],
-        zIndex: 1000,
-        // 开启标注避让，默认为开启，v1.4.15 新增属性
-        collision: true,
-        // 开启标注淡入动画，默认为开启，v1.4.15 新增属性
-        animation: true,
+      console.log("--");
+      AMapUI.loadUI(['overlay/AwesomeMarker'], function (AwesomeMarker) {
+        console.log("---");
+        console.log(test1+"vvvvv");
+        console.log("数组大小为："+lnglat_my.length);
+        lnglat_my.forEach((item) => {
+          console.log(item);
+        })
+        //console.log(this.lngLats.length+"./");
+
+        let awIcons = 'address-book';
+        let colors = "#d62728";
+        console.log("----");
+      //  console.log(this.lngLats.length);
+        for (let i = 0, len = lnglat_my.length; i < len; i++) {
+          console.log("-----");
+          new AwesomeMarker({
+            //设置awesomeIcon
+            awesomeIcon: awIcons,
+            iconLabel: {
+              style: {
+                color: colors, //字体颜色
+              }
+            },
+            //图标
+            iconStyle: 'black',
+            map: map,
+            position: [lnglat_my[i].x,lnglat_my[i].y]
+          });
+          console.log("------");
+          //console.log([this.lngLats[i].x,this.lngLats[i].y]);
+        }
       });
-      map.add(layer);
-      let markers = [];
-      for (let i = 0; i < LabelsData.length; i++) {
-        let curData = LabelsData[i];
-        curData.extData = {
-          index: i
-        };
-        let labelMarker = new AMap.LabelMarker(curData);
-        markers.push(labelMarker);
-        layer.add(labelMarker);
-      }
-      map.setFitView();
-  }
+    }
   },
   //初始化地图
   async created() {
+    console.log(this.lngLats.length+"+");
     // 已载入高德地图API，则直接初始化地图
-    if (window.AMap) {
+    if (window.AMap && window.AMapUI) {
+      console.log(this.lngLats.length+"!");
       this.initMap();
       // 未载入高德地图API，则先载入API再初始化
     } else {
+      console.log(this.lngLats.length+"...");
       await remoteLoad(`http://webapi.amap.com/maps?v=1.3&key=${MapKey}`)
       await remoteLoad('http://webapi.amap.com/ui/1.0/main.js')
       this.initMap();
-
     }
   }
 }

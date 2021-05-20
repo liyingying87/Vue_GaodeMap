@@ -2,19 +2,19 @@
   <div id="app">
     <div class="m-part">
       <h3 class="title">DEMO</h3>
-<!--      <mapDrag class="mapbox"></mapDrag>-->
-      <mapinit class="mapbox"> </mapinit>
+      <mapDrag class="mapbox"></mapDrag>
+<!--      <mapinit class="mapbox"> </mapinit>-->
     </div>
   </div>
 </template>
 <script>
-//import mapDrag from './components/mapDrag'
-import mapinit from "@/components/mapinit";
+import mapDrag from './components/mapDrag'
+//import mapinit from "@/components/mapinit";
 export default {
   name: 'app',
   components: {
-   // mapDrag,
-    mapinit
+    mapDrag,
+   // mapinit
   },
   data () {
     return {
