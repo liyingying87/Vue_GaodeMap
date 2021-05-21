@@ -44,11 +44,12 @@ export default {
       let AMap = this.AMap = window.AMap;
       console.log("-");
       let map = new AMap.Map('container', {
-        zoom: 17,
-        center: [121.504396,31.032782]
+        zoom: 16,
+        center: [121.504374,31.030502]
       });
       console.log("--");
-      AMapUI.loadUI(['overlay/AwesomeMarker'], function (AwesomeMarker) {
+      //异步执行函数 参考此网址https://lbs.amap.com/api/amap-ui/intro
+      AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
         console.log("---");
         console.log(test1+"vvvvv");
         console.log("数组大小为："+lnglat_my.length);
@@ -63,16 +64,21 @@ export default {
       //  console.log(this.lngLats.length);
         for (let i = 0, len = lnglat_my.length; i < len; i++) {
           console.log("-----");
-          new AwesomeMarker({
+          new SimpleMarker({
             //设置awesomeIcon
             awesomeIcon: awIcons,
+            //字体
             iconLabel: {
+              //普通文本
+              innerHTML: lnglat_my[i].id,
+              //设置样式
               style: {
-                color: colors, //字体颜色
+                color: '#fff',
+                fontSize: '120%',
+                marginTop: '2px'
               }
             },
-            //图标
-            iconStyle: 'black',
+            iconStyle: 'red',
             map: map,
             position: [lnglat_my[i].x,lnglat_my[i].y]
           });
@@ -92,6 +98,7 @@ export default {
       // 未载入高德地图API，则先载入API再初始化
     } else {
       console.log(this.lngLats.length+"...");
+      //官网有说采用异步的方式加载高德地图
       await remoteLoad(`http://webapi.amap.com/maps?v=1.3&key=${MapKey}`)
       await remoteLoad('http://webapi.amap.com/ui/1.0/main.js')
       this.initMap();
