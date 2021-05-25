@@ -4,6 +4,7 @@
       <h3 class="title">DEMO</h3>
       <mapDrag class="mapbox"></mapDrag>
 <!--      <mapinit class="mapbox"> </mapinit>-->
+<!--      ceshi -->
     </div>
   </div>
 </template>

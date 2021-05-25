@@ -129,6 +129,9 @@ export default {
       this.car_marker.moveAlong(this.lines.find(item => item.id == val).lineArr, 2000);
       //函数执行完了以后应该把小车移走
       // this.mapObj.remove(marker);
+      // this.$nextTick(function (){
+      //   this.mapObj.remove(this.car_marker);
+      // })
     }
   },
   //初始化地图
