@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="m-part">
-<!--      <h3 class="title">DEMO</h3>-->
+      <h3 class="title">DEMO</h3>
       <mapDrag class="mapbox"></mapDrag>
 <!--      <mapinit class="mapbox"> </mapinit>-->
 <!--      ceshi -->
